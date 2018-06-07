@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Skript backupi tegemiseks kasutades käsku: tar cvpjf BACKUPI_NIMI.tgz --exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=$
+#Skript backupi tegemiseks kasutades käsku: tar cvpjf BACKUPI_NIMI.tgz --exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/sys /
 
 
 
@@ -29,11 +29,11 @@ fi
 #Backup and compress to the drive
 if tar cvpjf /mnt/backup/$name.tgz --exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/sys /home; then
         if echo "Backup "$name" was successful!"; then
-                echo "Backup "$name" was successfully completed on the following date: `date +"%d.%m.%y"` and `date "+%H:%M:%S"`" | ma$
+                echo "Backup "$name" was successfully completed on the following date: `date +"%d.%m.%y"` and `date "+%H:%M:%S"`" | mail -s "Backup "$name" was completed successfully!" xxxx@hotmail.com;
         else
-                echo "Backup "$name" failed to complete on the following date: `date +"%d.%m.%y"` and `date "+%H:%M:%S"`" | mail -s "B$
+                echo "Backup "$name" failed to complete on the following date: `date +"%d.%m.%y"` and `date "+%H:%M:%S"`" | mail -s "Backup "$name" failed!" xxxx@hotmail.com;
         fi
-else echo "Backup "$name" failed to complete on the following date: `date +"%d.%m.%y"` and `date "+%H:%M:%S"`" | mail -s "Backup "$nam$
+else echo "Backup "$name" failed to complete on the following date: `date +"%d.%m.%y"` and `date "+%H:%M:%S"`" | mail -s "Backup "$name" failed!" xxxx@hotmail.com;
 exit 1
 fi
 
@@ -46,3 +46,4 @@ if lsblk | grep -q '/mnt/backup'; then
 else
         echo "Unmount successful!"
 fi
+
