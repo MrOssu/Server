@@ -1,0 +1,48 @@
+#!/bin/bash
+
+#Skript backupi tegemiseks kasutades käsku: tar cvpjf BACKUPI_NIMI.tgz --exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=$
+
+
+
+#Name of the backup
+echo -n "Name of the backup: "
+read name
+
+#List block device names
+lsblk
+
+#Enter the block device name (for example: sde)
+echo -n "Block device name(sdX): "
+read lsblk
+
+#Mount the inserted drive to the /mnt/backup folder
+mount /dev/$lsblk  /mnt/backup
+
+#Check if the mounting was successful or not, if not then stop the script
+if lsblk | grep -q '/mnt/backup'; then
+        echo "Mounting successful!"
+else
+        echo "Mounting FAILED!"
+exit 1
+fi
+
+#Backup and compress to the drive
+if tar cvpjf /mnt/backup/$name.tgz --exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/sys /home; then
+        if echo "Backup "$name" was successful!"; then
+                echo "Backup "$name" was successfully completed on the following date: `date +"%d.%m.%y"` and `date "+%H:%M:%S"`" | ma$
+        else
+                echo "Backup "$name" failed to complete on the following date: `date +"%d.%m.%y"` and `date "+%H:%M:%S"`" | mail -s "B$
+        fi
+else echo "Backup "$name" failed to complete on the following date: `date +"%d.%m.%y"` and `date "+%H:%M:%S"`" | mail -s "Backup "$nam$
+exit 1
+fi
+
+#Unmount previously mounted drive
+umount /dev/$lsblk
+
+#Check if the unmounting was successful or not
+if lsblk | grep -q '/mnt/backup'; then
+        echo "Unmount FAILED!"
+else
+        echo "Unmount successful!"
+fi
